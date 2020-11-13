@@ -105,3 +105,5 @@ CREATE TABLE IF NOT EXISTS StudentBookRelation
   FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (bookId) REFERENCES Book(bookId) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+insert into loginaccount values('admin', '$2a$10$8QmT9eFcvmPYUwixPmk0guQYS7Ff9IiUFaO3ieM0Iq1F1XYs9j5GO', 'ROLE_admin', 1);
