@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <meta charset="ISO-8859-1">
 <title>Teacher Registration</title>
 </head>
@@ -44,6 +45,8 @@
 	  <input type="text" id="username" name="username" maxlength="20" required="required"><br>
 	  <label for="password">Password:</label><br>
 	  <input type="password" id="password" name="password" maxlength="256" required="required"><br>
+	  <label for="confirm_password">Confirm Password:</label><br>
+	  <input type="password" id="confirm_password" name="confirm_password" maxlength="256" required="required"><br>
 	  <label for="dateOfBirth">Date of Birth:</label><br>
 	  <input type="date" id="dateOfBirth" name="dateOfBirth" required="required"><br>
 	  <label for="gender">Gender:</label><br>
@@ -62,5 +65,21 @@
 	  <input type="submit" value="Submit">
 	</form>
 	<p style="color:red;">${error}</p>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		var password = document.getElementById("password")
+		  , confirm_password = document.getElementById("confirm_password");
+	
+		function validatePassword(){
+		  if(password.value != confirm_password.value) {
+		    confirm_password.setCustomValidity("Passwords Don't Match");
+		  } else {
+		    confirm_password.setCustomValidity('');
+		  }
+		}
+	
+		password.onchange = validatePassword;
+		confirm_password.onkeyup = validatePassword;
+	</script>
 </body>
 </html>
