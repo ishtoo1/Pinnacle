@@ -1,90 +1,109 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
+
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <meta charset="ISO-8859-1">
 <title>Student Registration</title>
 </head>
+
 <body>
-	<h1>Pinnacle Competitive Classes</h1>
-	<a href="/">Home</a><br>
-	<a href="/results">Results</a><br>
-	<a href="/competitiveExams">Competitive Exams</a><br>
-	<c:set var = "userStr" value = "${loggedInAccount.getUsername()}"/>
-	<c:set var = "roleStr" value = "${loggedInAccount.getRole()}"/>
-	<c:set var = "len" value = "${fn:length(userStr)}"/>
-	<c:if test="${len>0}">
-		<c:if test="${roleStr == 'ROLE_admin'}">
-			<a href="/admin/profile/${userStr}">${userStr}</a><br>
-			<a href="/logout">Logout</a><br>
-		</c:if>
-		<c:if test="${roleStr == 'ROLE_teacher'}">
-			<a href="/teacher/profile/${userStr}">${userStr}</a><br>
-			<a href="/logout">Logout</a><br>
-		</c:if>
-		<c:if test="${roleStr == 'ROLE_student'}">
-			<a href="/student/profile/${userStr}">${userStr}</a><br>
-			<a href="/logout">Logout</a><br>
-		</c:if>
-		<a href="/welcome">Function</a><br>
-	</c:if>
-	<c:if test="${len==0}">
-	<a href="/login">Login</a><br>
-	<a href="/registerStudent">Register Student</a><br>
-	</c:if>
-	<h3>Student Registration</h3>
-	<form action="" method="post">
-	  <label for="studentName">Student Name:</label><br>
-	  <input type="text" id="studentName" name="studentName" maxlength="40" required="required"><br>
-	  <label for="username">UserName:</label><br>
-	  <input type="text" id="username" name="username" maxlength="20" required="required"><br>
-	  <label for="password">Password:</label><br>
-	  <input type="password" id="password" name="password" maxlength="256" required="required"><br>
-	  <label for="confirm_password">Confirm Password:</label><br>
-	  <input type="password" id="confirm_password" name="confirm_password" maxlength="256" required="required"><br>
-	  <label for="dateOfBirth">Date of Birth:</label><br>
-	  <input type="date" id="dateOfBirth" name="dateOfBirth" required="required"><br>
-	  <label for="gender">Gender:</label><br>
-	  <input type="radio" id="male" name="gender" value="male">
-	  <label for="male">Male</label><br>
-	  <input type="radio" id="female" name="gender" value="female">
-	  <label for="female">Female</label><br>
-	  <input type="radio" id="other" name="gender" value="other">
-	  <label for="other">Other</label><br>
-	  <label for="address">Address:</label><br>
-	  <input type="text" id="address" name="address" maxlength="100" required="required"><br>
-	  <label for="contactNumber">Contact Number:</label><br>
-	  <input type="number" id="contactNumber" name="contactNumber" min="1000000000" max="9999999999" required="required"><br>
-	  <select id="batchId" name="batchId" required="required">
-	  	<option value="">Choose a Batch</option>
-	    <c:forEach var="batch" items="${allOpenBatches}">
-	       <option value="${batch.getBatchId()}">${batch.getBatchId()} ${batch.getBatchName()}</option>   
-	   </c:forEach>
-	  </select>
-	  <br>
-	  <input type="submit" value="Submit">
-	</form>
-	<p style="color:red;">${error}</p>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<%@ include file="header.jsp"%>
+
+	<div class="form-container">
+		<div class="form">
+			<form-title>
+			<center>Student Registration</center>
+			</form-title>
+			<form class="form-registration" action="" method="post" name="form">
+				<label for="studentName">Student Name</label> <input
+					class="form-styling" type="text" id="studentName"
+					name="studentName" maxlength="40" required="required"> <label
+					for="username">UserName</label> <input class="form-styling"
+					type="text" id="username" name="username" maxlength="20"
+					required="required"> <label for="password">Password</label>
+				<input class="form-styling" type="password" id="password"
+					name="password" maxlength="256" required="required"> <label
+					for="confirm_password">Confirm Password</label> <input
+					class="form-styling" type="password" id="confirm_password"
+					name="confirm_password" maxlength="256" required="required">
+				<label for="dateOfBirth">Date of Birth</label> <input
+					class="form-styling" type="date" id="dateOfBirth"
+					name="dateOfBirth" required="required"> <label for="gender">Gender</label>
+				<input type="radio" id="male" name="gender" value="male">
+				<radio-label for="Male">Male</radio-label>
+				<br> <input type="radio" id="female" name="gender"
+					value="female">
+				<radio-label for="female">Female</radio-label>
+				<br> <input type="radio" id="other" name="gender" value="other">
+				<radio-label for="other">Other</radio-label>
+				<br>
+				<br> <label for="address">Address</label> <input
+					class="form-styling" type="text" id="address" name="address"
+					maxlength="100" required="required"> <label
+					for="contactNumber">Contact Number</label> <input
+					class="form-styling" type="number" id="contactNumber"
+					name="contactNumber" min="1000000000" max="9999999999"
+					required="required"> <label for="batchId">Batch</label> <select
+					class="form-styling" id="batchId" name="batchId"
+					required="required">
+					<option value="">Choose a Batch</option>
+					<c:forEach var="batch" items="${allOpenBatches}">
+						<option value="${batch.getBatchId()}">${batch.getBatchId()}
+							${batch.getBatchName()}</option>
+					</c:forEach>
+				</select><br>
+				<br>
+				<div class="btn-animate">
+					<input class="btn-submit" type="submit" value="Submit">
+				</div>
+			</form>
+			<br>
+			<br>
+			<center>
+				<p style="color: red;">${error}</p>
+			</center>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
-		var password = document.getElementById("password")
-		  , confirm_password = document.getElementById("confirm_password");
-	
-		function validatePassword(){
-		  if(password.value != confirm_password.value) {
-		    confirm_password.setCustomValidity("Passwords Don't Match");
-		  } else {
-		    confirm_password.setCustomValidity('');
-		  }
+		var password = document.getElementById("password"), confirm_password = document
+				.getElementById("confirm_password");
+
+		function validatePassword() {
+			if (password.value != confirm_password.value) {
+				confirm_password.setCustomValidity("Passwords Don't Match");
+			} else {
+				confirm_password.setCustomValidity('');
+			}
 		}
-	
+
 		password.onchange = validatePassword;
 		confirm_password.onkeyup = validatePassword;
 	</script>
+
+	<%@ include file="footer.jsp"%>
 </body>
+
 </html>

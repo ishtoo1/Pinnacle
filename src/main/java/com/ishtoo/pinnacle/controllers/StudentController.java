@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ishtoo.pinnacle.dao.LoginAccountDao;
 import com.ishtoo.pinnacle.dao.StudentBookRelationDao;
@@ -130,18 +131,11 @@ public class StudentController {
 		return "searchStudentByName";
 	}
 	
-	@PostMapping("student/searchStudentByName")
-	public String checkSearchStudentByName(@RequestParam("studentName") String studentName, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
-			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
-		}
+	@PostMapping(path="student/searchStudent/{studentName}", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Student> getStudentByName(@PathVariable("studentName") String studentName) {
 		List<Student> studentsFound=studentDao.searchStudentByName(studentName);
-		if (studentsFound.size()==0) {
-			m.addAttribute("error", "No result found!");
-		}
-		m.addAttribute("studentsFound", studentsFound);
-		return "searchStudentByName";
+		return studentsFound;
 	}
 	
 	@GetMapping("student/searchTeacherByName")
@@ -153,18 +147,11 @@ public class StudentController {
 		return "searchTeacherByName";
 	}
 	
-	@PostMapping("student/searchTeacherByName")
-	public String checkSearchTeacherByName(@RequestParam("teacherName") String teacherName, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
-			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
-		}
+	@PostMapping(path="student/searchTeacher/{teacherName}", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public List<Teacher> getTeacherByName(@PathVariable("teacherName") String teacherName) {
 		List<Teacher> teachersFound=teacherDao.searchTeacherByName(teacherName);
-		if (teachersFound.size()==0) {
-			m.addAttribute("error", "No result found!");
-		}
-		m.addAttribute("teachersFound", teachersFound);
-		return "searchTeacherByName";
+		return teachersFound;
 	}
 	
 	@GetMapping("/student/{username}/viewBatchProfile")
@@ -191,5 +178,18 @@ public class StudentController {
 			return "redirect:/welcome";
 		}
 		return "redirect:/batch/" + student.getBatchId() + "/test/upcoming";
+	}
+	
+	@GetMapping("/student/{username}/viewSubjectsInBatch")
+	public String viewSubjectsInBatch(@PathVariable("username") String username, Model m) {
+		String loggedInUsername=securityService.findLoggedInUsername();
+		if (loggedInUsername!=null) {
+			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
+		}
+		Student student=studentDao.findByUsername(username);
+		if (student==null) {
+			return "redirect:/welcome";
+		}
+		return "redirect:/batch/" + student.getBatchId() + "/subject/all";
 	}
 }

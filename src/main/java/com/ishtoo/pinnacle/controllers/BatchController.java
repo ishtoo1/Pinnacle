@@ -72,6 +72,7 @@ public class BatchController {
 		m.addAttribute("batch", batchDao.findBatchById(batchId));
 		m.addAttribute("subjectsInThisBatch", subjectDao.findSubjectsInThisBatch(batchId));
 		m.addAttribute("studentsInThisBatch", studentDao.findStudentsInThisBatch(batchId));
+		m.addAttribute("testsInThisBatch", batchTestRelationDao.findUpcomingTestsInThisBatch(batchId));
 		return "batchProfile";
 	}
 	

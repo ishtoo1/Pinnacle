@@ -131,40 +131,12 @@ public class TeacherController {
 		return "searchStudentByName";
 	}
 	
-	@PostMapping("teacher/searchStudentByName")
-	public String checkSearchStudentByName(@RequestParam("studentName") String studentName, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
-			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
-		}
-		List<Student> studentsFound=studentDao.searchStudentByName(studentName);
-		if (studentsFound.size()==0) {
-			m.addAttribute("error", "No result found!");
-		}
-		m.addAttribute("studentsFound", studentsFound);
-		return "searchStudentByName";
-	}
-	
 	@GetMapping("teacher/searchTeacherByName")
 	public String searchTeacherByName(Model m) {
 		String loggedInUsername=securityService.findLoggedInUsername();
 		if (loggedInUsername!=null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		return "searchTeacherByName";
-	}
-	
-	@PostMapping("teacher/searchTeacherByName")
-	public String checkSearchTeacherByName(@RequestParam("teacherName") String teacherName, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
-			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
-		}
-		List<Teacher> teachersFound=teacherDao.searchTeacherByName(teacherName);
-		if (teachersFound.size()==0) {
-			m.addAttribute("error", "No result found!");
-		}
-		m.addAttribute("teachersFound", teachersFound);
 		return "searchTeacherByName";
 	}
 	
