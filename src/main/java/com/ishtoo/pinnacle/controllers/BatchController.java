@@ -24,49 +24,49 @@ import com.ishtoo.pinnacle.service.UserService;
 
 @Controller
 public class BatchController {
-	
+
 	@Autowired
 	SecurityService securityService;
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	BatchDao batchDao;
-	
+
 	@Autowired
 	SubjectDao subjectDao;
-	
+
 	@Autowired
 	StudentDao studentDao;
-	
+
 	@Autowired
 	LectureDao lectureDao;
-	
+
 	@Autowired
-	TeacherDao teacherDao; 
-	
+	TeacherDao teacherDao;
+
 	@Autowired
-	BatchTestRelationDao batchTestRelationDao;	
-	
+	BatchTestRelationDao batchTestRelationDao;
+
 	@GetMapping("batch/all")
 	public String batches(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "batches";
 	}
-	
+
 	@GetMapping("batch/profile/{batchId}")
 	public String viewBatchProfile(@PathVariable("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Batch batch=batchDao.findBatchById(batchId);
-		if (batch==null) {
+		Batch batch = batchDao.findBatchById(batchId);
+		if (batch == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("batch", batchDao.findBatchById(batchId));
@@ -75,15 +75,16 @@ public class BatchController {
 		m.addAttribute("testsInThisBatch", batchTestRelationDao.findUpcomingTestsInThisBatch(batchId));
 		return "batchProfile";
 	}
-	
+
 	@GetMapping("/batch/{batchId}/subject/profile/{subjectId}")
-	public String viewSubjectProfile(@PathVariable("batchId") String batchId, @PathVariable("subjectId") String subjectId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String viewSubjectProfile(@PathVariable("batchId") String batchId,
+			@PathVariable("subjectId") String subjectId, Model m) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Subject subject=subjectDao.findSubjectById(batchId, subjectId);
-		if (subject==null) {
+		Subject subject = subjectDao.findSubjectById(batchId, subjectId);
+		if (subject == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("teacher", teacherDao.findById(subject.getTeacherId()));
@@ -91,56 +92,57 @@ public class BatchController {
 		m.addAttribute("lecturesInThisSubject", lectureDao.findLecturesInThisSubject(batchId, subjectId));
 		return "subjectProfile";
 	}
-	
+
 	@GetMapping("/batch/{batchId}/subject/all")
 	public String displaySubjectsInBatch(@PathVariable("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Batch batch=batchDao.findBatchById(batchId);
-		if (batch==null) {
+		Batch batch = batchDao.findBatchById(batchId);
+		if (batch == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("batch", batchDao.findBatchById(batchId));
 		m.addAttribute("subjectsInThisBatch", subjectDao.findSubjectsInThisBatch(batchId));
 		return "displaySubjectsInBatch";
 	}
-	
+
 	@GetMapping("/batch/viewSubjectsInBatch")
 	public String viewSubjectsInBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "subjectsInBatch";
 	}
-	
+
 	@PostMapping("/batch/viewSubjectsInBatch")
 	public String checkViewSubjectsInBatch(@RequestParam("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return ("redirect:/batch/" + batchId + "/subject/all");
 	}
-	
-	@PostMapping(path="batch/changeSubjectInit/{batchId}", produces="application/json; charset=UTF-8")
+
+	@PostMapping(path = "batch/changeSubjectInit/{batchId}", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Subject> getAllSubjectsInThisBatch(@PathVariable("batchId") String batchId) {
-		List<Subject> allSubjectsInThisBatch=subjectDao.findSubjectsInThisBatch(batchId);
+		List<Subject> allSubjectsInThisBatch = subjectDao.findSubjectsInThisBatch(batchId);
 		return allSubjectsInThisBatch;
 	}
-	
+
 	@GetMapping("/batch/{batchId}/subject/{subjectId}/lecture/all")
-	public String displayLecturesInSubject(@PathVariable("batchId") String batchId, @PathVariable("subjectId") String subjectId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String displayLecturesInSubject(@PathVariable("batchId") String batchId,
+			@PathVariable("subjectId") String subjectId, Model m) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Subject subject=subjectDao.findSubjectById(batchId, subjectId);
-		if (subject==null) {
+		Subject subject = subjectDao.findSubjectById(batchId, subjectId);
+		if (subject == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("teacher", teacherDao.findById(subject.getTeacherId()));
@@ -148,104 +150,105 @@ public class BatchController {
 		m.addAttribute("lecturesInThisSubject", lectureDao.findLecturesInThisSubject(batchId, subjectId));
 		return "displayLecturesInSubject";
 	}
-	
+
 	@GetMapping("/batch/viewLecturesInSubject")
 	public String viewLecturesInSubject(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "lecturesInSubject";
 	}
-	
+
 	@PostMapping("/batch/viewLecturesInSubject")
-	public String checkViewLecturesInSubject(@RequestParam("batchId") String batchId, @RequestParam("subjectId") String subjectId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkViewLecturesInSubject(@RequestParam("batchId") String batchId,
+			@RequestParam("subjectId") String subjectId, Model m) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return ("redirect:/batch/" + batchId + "/subject/" + subjectId + "/lecture/all");
 	}
-	
+
 	@GetMapping("/batch/{batchId}/student/all")
 	public String displayStudentsInBatch(@PathVariable("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Batch batch=batchDao.findBatchById(batchId);
-		if (batch==null) {
+		Batch batch = batchDao.findBatchById(batchId);
+		if (batch == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("batch", batchDao.findBatchById(batchId));
 		m.addAttribute("studentsInThisBatch", studentDao.findStudentsInThisBatch(batchId));
 		return "displayStudentsInBatch";
 	}
-	
+
 	@GetMapping("/batch/viewStudentsInBatch")
 	public String viewStudentsInBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "studentsInBatch";
 	}
-	
+
 	@PostMapping("/batch/viewStudentsInBatch")
 	public String checkViewStudentsInBatch(@RequestParam("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return ("redirect:/batch/" + batchId + "/student/all");
 	}
-	
+
 	@GetMapping("/batch/{batchId}/test/upcoming")
 	public String displayUpcomingTestsInBatch(@PathVariable("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Batch batch=batchDao.findBatchById(batchId);
-		if (batch==null) {
+		Batch batch = batchDao.findBatchById(batchId);
+		if (batch == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("batch", batchDao.findBatchById(batchId));
 		m.addAttribute("testsInThisBatch", batchTestRelationDao.findUpcomingTestsInThisBatch(batchId));
 		return "displayTestsInBatch";
 	}
-	
+
 	@GetMapping("/batch/{batchId}/test/all")
 	public String displayTestsInBatch(@PathVariable("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		Batch batch=batchDao.findBatchById(batchId);
-		if (batch==null) {
+		Batch batch = batchDao.findBatchById(batchId);
+		if (batch == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute("batch", batchDao.findBatchById(batchId));
 		m.addAttribute("testsInThisBatch", batchTestRelationDao.findTestsInThisBatch(batchId));
 		return "displayTestsInBatch";
 	}
-	
+
 	@GetMapping("/batch/viewTestsInBatch")
 	public String viewTestsInBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "testsInBatch";
 	}
-	
+
 	@PostMapping("/batch/viewTestsInBatch")
 	public String checkViewTestsInBatch(@RequestParam("batchId") String batchId, Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return ("redirect:/batch/" + batchId + "/test/all");

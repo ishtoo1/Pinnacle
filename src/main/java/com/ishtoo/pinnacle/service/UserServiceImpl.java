@@ -12,10 +12,10 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private LoginAccountDao loginAccountDao;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Override
 	public void save(LoginAccount loginAccount) {
 		loginAccount.setPassword(bCryptPasswordEncoder.encode(loginAccount.getPassword()));
@@ -26,9 +26,8 @@ public class UserServiceImpl implements UserService {
 	public LoginAccount findByUsername(String username) {
 		LoginAccount loginAccount;
 		try {
-			loginAccount=loginAccountDao.findByUsername(username);
-		}
-		catch(Exception e) {
+			loginAccount = loginAccountDao.findByUsername(username);
+		} catch (Exception e) {
 			return null;
 		}
 		return loginAccount;
@@ -43,6 +42,5 @@ public class UserServiceImpl implements UserService {
 	public void deleteLoginAccount(String username) {
 		loginAccountDao.deleteLoginAccount(username);
 	}
-
 
 }

@@ -56,8 +56,7 @@
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 			<center>
 				<p style="color: red;">${error}</p>
 			</center>

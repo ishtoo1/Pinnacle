@@ -56,8 +56,7 @@
 				<radio-label for="female">Female</radio-label>
 				<br> <input type="radio" id="other" name="gender" value="other">
 				<radio-label for="other">Other</radio-label>
-				<br>
-				<br> <label for="address">Address</label> <input
+				<br> <br> <label for="address">Address</label> <input
 					class="form-styling" type="text" id="address" name="address"
 					maxlength="100" required="required"><br> <label
 					for="contactNumber">Contact Number</label> <input
@@ -65,14 +64,12 @@
 					name="contactNumber" min="1000000000" max="9999999999"
 					required="required"><br> <label for="joiningDate">Joining
 					Date</label> <input class="form-styling" type="date" id="joiningDate"
-					name="joiningDate" required="required"><br>
-				<br>
+					name="joiningDate" required="required"><br> <br>
 				<div class="btn-animate">
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 			<center>
 				<p style="color: red;">${error}</p>
 			</center>

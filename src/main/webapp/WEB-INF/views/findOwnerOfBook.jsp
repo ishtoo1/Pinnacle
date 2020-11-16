@@ -43,16 +43,14 @@
 						<option value="${book.getBookId()}">${book.getBookId()}:
 							${book.getBookName()}</option>
 					</c:forEach>
-				</select> <br>
-				<br>
+				</select> <br> <br>
 				<div class="btn-animate">
 					<div id="submit" class="btn-submit" type="submit">
 						<center>Submit</center>
 					</div>
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 		</div>
 	</div>
 

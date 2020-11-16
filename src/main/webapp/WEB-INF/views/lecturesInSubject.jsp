@@ -46,14 +46,12 @@
 						<option value="${subject.getSubjectId()}">${subject.getSubjectId()}
 							${subject.getSubjectName()}</option>
 					</c:forEach>
-				</select> <br>
-				<br>
+				</select> <br> <br>
 				<div class="btn-animate">
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 			<center>
 				<p style="color: red;">${error}</p>
 			</center>

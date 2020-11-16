@@ -196,10 +196,10 @@
 						time we began in 2006, we have constantly strived for excellence.
 						Like for the many young minds we have shaped, it's the winning
 						spirit that has been of essence. Even quintessential, if you look
-						at it from our perspective.<br>
-						<b>Pinnacle</b> has always been innovating to create excellence. I
-						am sure the varied services that this web-site offers our existing
-						and aspiring students will be a great boon to students.
+						at it from our perspective.<br> <b>Pinnacle</b> has always
+						been innovating to create excellence. I am sure the varied
+						services that this web-site offers our existing and aspiring
+						students will be a great boon to students.
 					</p>
 				</div>
 				<div class="col-md-6 advantage-rit wow fadeInRight"

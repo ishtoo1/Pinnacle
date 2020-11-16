@@ -57,8 +57,7 @@
 				<radio-label for="female">Female</radio-label>
 				<br> <input type="radio" id="other" name="gender" value="other">
 				<radio-label for="other">Other</radio-label>
-				<br>
-				<br> <label for="address">Address</label> <input
+				<br> <br> <label for="address">Address</label> <input
 					class="form-styling" type="text" id="address" name="address"
 					maxlength="100" required="required"> <label
 					for="contactNumber">Contact Number</label> <input
@@ -72,14 +71,12 @@
 						<option value="${batch.getBatchId()}">${batch.getBatchId()}
 							${batch.getBatchName()}</option>
 					</c:forEach>
-				</select><br>
-				<br>
+				</select><br> <br>
 				<div class="btn-animate">
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 			<center>
 				<p style="color: red;">${error}</p>
 			</center>

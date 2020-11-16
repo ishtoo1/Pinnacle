@@ -38,14 +38,12 @@
 					name="testDate" required="required"><br> <label
 					for="totalMarks">Total Marks</label> <input class="form-styling"
 					type="number" id="totalMarks" name="totalMarks" min="0" max="1000"
-					required="required"><br>
-				<br>
+					required="required"><br> <br>
 				<div class="btn-animate">
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 			<center>
 				<p style="color: red;">${error}</p>
 			</center>

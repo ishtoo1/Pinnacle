@@ -39,129 +39,131 @@ import com.ishtoo.pinnacle.service.UserService;
 public class AdminController {
 	@Autowired
 	SecurityService securityService;
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	TeacherDao teacherDao;
-	
+
 	@Autowired
 	SubjectDao subjectDao;
-	
+
 	@Autowired
 	BatchDao batchDao;
-	
+
 	@Autowired
 	StudentDao studentDao;
-	
+
 	@Autowired
 	TestDao testDao;
-	
+
 	@Autowired
 	BookDao bookDao;
-	
+
 	@Autowired
 	BatchTestRelationDao batchTestRelationDao;
-	
+
 	@Autowired
 	LectureDao lectureDao;
-	
+
 	@Autowired
 	StudentBookRelationDao studentBookRelationDao;
-	
+
 	@RequestMapping("/admin")
 	public String adminHome(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "admin";
 	}
-	
+
 	@RequestMapping("/admin/profile/{username}")
 	public String adminProfile(@PathVariable String username, Model m) {
 		LoginAccount loginAccount = userService.findByUsername(username);
-		if (loginAccount==null) {
+		if (loginAccount == null) {
 			return "redirect:/welcome";
 		}
 		m.addAttribute(loginAccount);
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "adminProfile";
 	}
-	
+
 	@GetMapping("/admin/registerTeacher")
 	public String registerTeacher(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "registerTeacher";
 	}
-	
+
 	@PostMapping("/admin/registerTeacher")
-	public String checkRegisterTeacher(@ModelAttribute Teacher teacher, @ModelAttribute LoginAccount loginAccount, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkRegisterTeacher(@ModelAttribute Teacher teacher, @ModelAttribute LoginAccount loginAccount,
+			Model m, RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-        loginAccount.setEnabled(Boolean.TRUE);
-        loginAccount.setRole("ROLE_teacher");
-        if (userService.doesLoginAccountExists(loginAccount)) {
-        	m.addAttribute("error", "Account with same UserName already exists");
-        	return "registerTeacher";
-        }
-        userService.save(loginAccount);
-        teacherDao.addTeacher(teacher);
-        redirectAttributes.addFlashAttribute("success", "Success!");
-        return "redirect:/admin";
+		loginAccount.setEnabled(Boolean.TRUE);
+		loginAccount.setRole("ROLE_teacher");
+		if (userService.doesLoginAccountExists(loginAccount)) {
+			m.addAttribute("error", "Account with same UserName already exists");
+			return "registerTeacher";
+		}
+		userService.save(loginAccount);
+		teacherDao.addTeacher(teacher);
+		redirectAttributes.addFlashAttribute("success", "Success!");
+		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("/admin/registerStudent")
 	public String registerStudent(Model m) {
 		m.addAttribute("allOpenBatches", batchDao.findAllOpenBatches());
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "registerStudent";
 	}
-	
+
 	@PostMapping("/admin/registerStudent")
-	public String checkRegisterStudent(@ModelAttribute Student student, @ModelAttribute LoginAccount loginAccount, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkRegisterStudent(@ModelAttribute Student student, @ModelAttribute LoginAccount loginAccount,
+			Model m, RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-        loginAccount.setEnabled(Boolean.TRUE);
-        loginAccount.setRole("ROLE_student");
-        if (userService.doesLoginAccountExists(loginAccount)) {
-        	m.addAttribute("error", "Account with same UserName already exists");
-        	m.addAttribute("allOpenBatches", batchDao.findAllOpenBatches());
-        	return "registerStudent";
-        }
-        userService.save(loginAccount);
-        studentDao.addStudent(student);
-        redirectAttributes.addFlashAttribute("success", "Success!");
-        return "redirect:/admin";
+		loginAccount.setEnabled(Boolean.TRUE);
+		loginAccount.setRole("ROLE_student");
+		if (userService.doesLoginAccountExists(loginAccount)) {
+			m.addAttribute("error", "Account with same UserName already exists");
+			m.addAttribute("allOpenBatches", batchDao.findAllOpenBatches());
+			return "registerStudent";
+		}
+		userService.save(loginAccount);
+		studentDao.addStudent(student);
+		redirectAttributes.addFlashAttribute("success", "Success!");
+		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/addBatch")
 	public String addBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "addBatch";
 	}
-	
+
 	@PostMapping("admin/addBatch")
 	public String checkAddBatch(@ModelAttribute Batch batch, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		if (batchDao.checkIfBatchAlreadyExists(batch)) {
@@ -172,134 +174,138 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/addTest")
 	public String addTest(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "addTest";
 	}
-	
+
 	@PostMapping("admin/addTest")
 	public String checkAddTest(@ModelAttribute Test test, Model m, RedirectAttributes redirectAttributes) {
 		testDao.addTest(test);
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/addBook")
 	public String addBook(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "addBook";
 	}
-	
+
 	@PostMapping("admin/addBook")
 	public String checkAddBook(@ModelAttribute Book book, Model m, RedirectAttributes redirectAttributes) {
 		bookDao.addBook(book);
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
-	@PostMapping(path="admin/findUpcomingTestsNotInThisBatch/{batchId}", produces="application/json; charset=UTF-8")
+
+	@PostMapping(path = "admin/findUpcomingTestsNotInThisBatch/{batchId}", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Test> findUpcomingTestsNotInThisBatch(@PathVariable("batchId") String batchId) {
-		List<Test> allUpcomingTestsNotInThisBatch=batchTestRelationDao.findUpcomingTestsNotInThisBatch(batchId);
+		List<Test> allUpcomingTestsNotInThisBatch = batchTestRelationDao.findUpcomingTestsNotInThisBatch(batchId);
 		return allUpcomingTestsNotInThisBatch;
 	}
-	
+
 	@GetMapping("admin/addTestToBatch")
 	public String addTestToBatch(Model m) {
 		m.addAttribute("allBatches", batchDao.findAllBatches());
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "addTestToBatch";
 	}
-	
+
 	@PostMapping("admin/addTestToBatch")
-	public String checkAddTestToBatch(@ModelAttribute BatchTestRelation batchTestRelation, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkAddTestToBatch(@ModelAttribute BatchTestRelation batchTestRelation, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		batchTestRelationDao.addTestToBatch(batchTestRelation);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/openAdmissionsForBatch")
 	public String openAdmissionsForBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allClosedBatches", batchDao.findAllClosedBatches());
 		return "openAdmissionsForBatch";
 	}
-	
+
 	@PostMapping("admin/openAdmissionsForBatch")
-	public String checkOpenAdmissionsForBatch(@ModelAttribute Batch batch, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkOpenAdmissionsForBatch(@ModelAttribute Batch batch, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		batchDao.openAdmissionsForBatch(batch);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/closeAdmissionsForBatch")
 	public String closeAdmissionsForBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allOpenBatches", batchDao.findAllOpenBatches());
 		return "closeAdmissionsForBatch";
 	}
-	
+
 	@PostMapping("admin/closeAdmissionsForBatch")
-	public String checkCloseAdmissionsForBatch(@ModelAttribute Batch batch, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkCloseAdmissionsForBatch(@ModelAttribute Batch batch, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		batchDao.closeAdmissionsForBatch(batch);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/issueBook")
 	public String issueBook(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allAvailableBooks", bookDao.findAllAvailableBooks());
 		return "issueBook";
 	}
-	
+
 	@PostMapping("admin/issueBook")
-	public String checkIssueBook(@ModelAttribute Book book, @RequestParam("username") String username, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkIssueBook(@ModelAttribute Book book, @RequestParam("username") String username, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		if (userService.findByUsername(username)==null) {
+		if (userService.findByUsername(username) == null) {
 			m.addAttribute("error", "Invalid Username");
 			m.addAttribute("allAvailableBooks", bookDao.findAllAvailableBooks());
 			return "issueBook";
@@ -313,40 +319,40 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/searchStudentByName")
 	public String searchStudentByName(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "searchStudentByName";
 	}
-	
+
 	@GetMapping("admin/searchTeacherByName")
 	public String searchTeacherByName(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "searchTeacherByName";
 	}
-	
+
 	@GetMapping("admin/addSubject")
 	public String addSubject(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		m.addAttribute("allTeachers", teacherDao.findAllTeachers());
 		return "addSubject";
 	}
-	
+
 	@PostMapping("admin/addSubject")
 	public String checkAddSubject(@ModelAttribute Subject subject, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		if (subjectDao.checkIfSubjectExistsInBatch(subject.getSubjectId(), subject.getBatchId())) {
@@ -359,226 +365,233 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
-	@PostMapping(path="admin/changeSubjectInit/{batchId}", produces="application/json; charset=UTF-8")
+
+	@PostMapping(path = "admin/changeSubjectInit/{batchId}", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Subject> getAllSubjectsInThisBatch(@PathVariable("batchId") String batchId) {
-		List<Subject> allSubjectsInThisBatch=subjectDao.findSubjectsInThisBatch(batchId);
+		List<Subject> allSubjectsInThisBatch = subjectDao.findSubjectsInThisBatch(batchId);
 		return allSubjectsInThisBatch;
-	}	
-	
+	}
+
 	@GetMapping("admin/changeSubjectTeacher")
 	public String changeSubjectTeacher(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		m.addAttribute("allTeachers", teacherDao.findAllTeachers());
 		return "changeSubjectTeacher";
 	}
-	
+
 	@PostMapping("admin/changeSubjectTeacher")
 	public String checkChangeSubjectTeacher(Subject subject, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		subjectDao.changeSubjectTeacher(subject);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/addLecture")
 	public String addLecture(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "addLecture";
 	}
-	
+
 	@PostMapping("admin/addLecture")
 	public String checkAddLecture(Lecture lecture, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		lectureDao.addLecture(lecture);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/deleteBatch")
 	public String deleteBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "deleteBatch";
 	}
-	
+
 	@PostMapping("admin/deleteBatch")
-	public String checkDeleteBatch(@RequestParam("batchId") String batchId, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteBatch(@RequestParam("batchId") String batchId, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		batchDao.deleteBatch(batchId);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/deleteSubject")
 	public String deleteSubject(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "deleteSubject";
 	}
-	
+
 	@PostMapping("admin/deleteSubject")
-	public String checkDeleteSubject(@RequestParam("batchId") String batchId, @RequestParam("subjectId") String subjectId, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteSubject(@RequestParam("batchId") String batchId,
+			@RequestParam("subjectId") String subjectId, Model m, RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		subjectDao.deleteSubject(batchId, subjectId);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
-	@PostMapping(path="/admin/findTestsInThisBatch/{batchId}", produces="application/json; charset=UTF-8")
+
+	@PostMapping(path = "/admin/findTestsInThisBatch/{batchId}", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Test> findTestsInThisBatch(@PathVariable("batchId") String batchId) {
-		List<Test> allTestsInThisBatch=batchTestRelationDao.findTestsInThisBatch(batchId);
+		List<Test> allTestsInThisBatch = batchTestRelationDao.findTestsInThisBatch(batchId);
 		return allTestsInThisBatch;
 	}
-	
+
 	@GetMapping("admin/deleteTestFromBatch")
 	public String deleteTestFromBatch(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "deleteTestFromBatch";
 	}
-	
+
 	@PostMapping("admin/deleteTestFromBatch")
-	public String checkDeleteTestFromBatch(@RequestParam("batchId") String batchId, @RequestParam("testId") String testId, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteTestFromBatch(@RequestParam("batchId") String batchId,
+			@RequestParam("testId") String testId, Model m, RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		batchTestRelationDao.deleteTestFromBatch(batchId, testId);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/deleteBook")
 	public String deleteBook(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBooks", bookDao.findAllBooks());
 		return "deleteBook";
 	}
-	
+
 	@PostMapping("admin/deleteBook")
-	public String checkDeleteBook(@RequestParam("bookId") String bookId, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteBook(@RequestParam("bookId") String bookId, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		bookDao.deleteBook(bookId);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
-	@PostMapping(path="/admin/findAllBooksIssuedToStudent/{username}", produces="application/json; charset=UTF-8")
+
+	@PostMapping(path = "/admin/findAllBooksIssuedToStudent/{username}", produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public List<Book> findAllBooksIssuedToStudent(@PathVariable("username") String username) {
-		if (userService.findByUsername(username)==null) {
+		if (userService.findByUsername(username) == null) {
 			return null;
 		}
 		if (!userService.findByUsername(username).getRole().equalsIgnoreCase("ROLE_student")) {
 			return null;
 		}
-		Student student=studentDao.findByUsername(username);
-		List<Book> allBooksIssuedToStudent=bookDao.findAllBooksIssuedToStudent(student.getStudentId());
+		Student student = studentDao.findByUsername(username);
+		List<Book> allBooksIssuedToStudent = bookDao.findAllBooksIssuedToStudent(student.getStudentId());
 		return allBooksIssuedToStudent;
 	}
-	
+
 	@GetMapping("admin/returnBook")
 	public String returnBook(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "returnBook";
 	}
-	
+
 	@PostMapping("admin/returnBook")
-	public String checkReturnBook(@RequestParam("bookId") String bookId, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkReturnBook(@RequestParam("bookId") String bookId, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		studentBookRelationDao.returnBook(bookId);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
-	@PostMapping(path="admin/findLecturesInThisSubject/{batchId}/{subjectId}", produces="application/json; charset=UTF-8")
+
+	@PostMapping(path = "admin/findLecturesInThisSubject/{batchId}/{subjectId}", produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public List<Lecture> getAllLecturesInThisSubject(@PathVariable("batchId") String batchId, @PathVariable("subjectId") String subjectId) {
-		List<Lecture> allLecturesInThisSubject=lectureDao.findLecturesInThisSubject(batchId, subjectId);
+	public List<Lecture> getAllLecturesInThisSubject(@PathVariable("batchId") String batchId,
+			@PathVariable("subjectId") String subjectId) {
+		List<Lecture> allLecturesInThisSubject = lectureDao.findLecturesInThisSubject(batchId, subjectId);
 		return allLecturesInThisSubject;
 	}
-	
+
 	@GetMapping("admin/deleteLecture")
 	public String deleteLecture(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allBatches", batchDao.findAllBatches());
 		return "deleteLecture";
 	}
-	
+
 	@PostMapping("admin/deleteLecture")
 	public String checkDeleteLecture(Lecture lecture, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		lectureDao.deleteLecture(lecture);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/deleteStudent")
 	public String deleteStudent(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "deleteStudent";
 	}
-	
+
 	@PostMapping("admin/deleteStudent")
-	public String checkDeleteStudent(@RequestParam("username") String username, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteStudent(@RequestParam("username") String username, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		if (userService.findByUsername(username)==null) {
+		if (userService.findByUsername(username) == null) {
 			m.addAttribute("error", "Invalid Username");
 			return "deleteStudent";
 		}
@@ -590,23 +603,24 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/deleteTeacher")
 	public String deleteTeacher(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		return "deleteTeacher";
 	}
-	
+
 	@PostMapping("admin/deleteTeacher")
-	public String checkDeleteTeacher(@RequestParam("username") String username, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteTeacher(@RequestParam("username") String username, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
-		if (userService.findByUsername(username)==null) {
+		if (userService.findByUsername(username) == null) {
 			m.addAttribute("error", "Invalid Username");
 			return "deleteTeacher";
 		}
@@ -618,21 +632,22 @@ public class AdminController {
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
 	}
-	
+
 	@GetMapping("admin/deleteTest")
 	public String deleteTest(Model m) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		m.addAttribute("allTests", testDao.findAllTests());
 		return "deleteTest";
 	}
-	
+
 	@PostMapping("admin/deleteTest")
-	public String checkDeleteTest(@RequestParam("testId") String testId, Model m, RedirectAttributes redirectAttributes) {
-		String loggedInUsername=securityService.findLoggedInUsername();
-		if (loggedInUsername!=null) {
+	public String checkDeleteTest(@RequestParam("testId") String testId, Model m,
+			RedirectAttributes redirectAttributes) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
 		testDao.deleteTest(testId);

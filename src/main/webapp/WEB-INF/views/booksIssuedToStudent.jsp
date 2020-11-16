@@ -33,14 +33,12 @@
 			<form class="form-registration" action="" method="post" name="form">
 				<label for="username">Student UserName</label> <input
 					class="form-styling" type="text" id="username" name="username"
-					maxlength="20" required="required"><br>
-				<br>
+					maxlength="20" required="required"><br> <br>
 				<div class="btn-animate">
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>
 			</form>
-			<br>
-			<br>
+			<br> <br>
 			<center>
 				<p style="color: red;">${error}</p>
 			</center>
