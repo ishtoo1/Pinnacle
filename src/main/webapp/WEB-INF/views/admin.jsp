@@ -184,6 +184,19 @@
 				</ul>
 			</div>
 		</div>
+		
+		<div class="dropdown-list-element">
+			<div class="dropdown-title-container not-border"
+				onclick="toggleBox(this)">
+				<div class="arrow"></div>
+				<div class="title-text">Manage Transactions</div>
+			</div>
+			<div class="content">
+				<ul class="dropdown-list-items">
+					<li><a href="/admin/getAllTransactions">View all Transactions</a></li>
+				</ul>
+			</div>
+		</div>
 
 	</div>
 	<%@ include file="footer.jsp"%>

@@ -57,7 +57,7 @@ public class BatchTestRelationDaoImpl implements BatchTestRelationDao {
 
 	@Override
 	public List<Batch> findBatchesInTest(int testId) {
-		String sql = "select distinct batch.batchId, batchName, startingDate, endDate, isOpen "
+		String sql = "select distinct batch.batchId, batchName, startingDate, endDate, isOpen, fees "
 				+ "from (select * from BatchTestRelation where testId=?) as A "
 				+ "right join batch on A.batchId=batch.batchId " + "where A.testId is not null";
 		return template.query(sql, new Object[] { testId }, new BeanPropertyRowMapper<>(Batch.class));

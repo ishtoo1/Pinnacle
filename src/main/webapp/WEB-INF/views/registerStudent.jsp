@@ -69,7 +69,7 @@
 					<option value="">Choose a Batch</option>
 					<c:forEach var="batch" items="${allOpenBatches}">
 						<option value="${batch.getBatchId()}">${batch.getBatchId()}
-							${batch.getBatchName()}</option>
+							${batch.getBatchName()}: Rs.${batch.getFees()}</option>
 					</c:forEach>
 				</select><br> <br>
 				<div class="btn-animate">

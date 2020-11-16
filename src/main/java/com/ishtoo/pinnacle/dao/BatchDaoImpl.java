@@ -35,9 +35,9 @@ public class BatchDaoImpl implements BatchDao {
 
 	@Override
 	public void addBatch(Batch batch) {
-		String sql = "insert into Batch(batchId, batchName, startingDate, endDate, isOpen) values(?, ?, ?, ?, ?)";
+		String sql = "insert into Batch(batchId, batchName, startingDate, endDate, isOpen, fees) values(?, ?, ?, ?, ?, ?)";
 		template.update(sql, batch.getBatchId(), batch.getBatchName(), batch.getStartingDate(), batch.getEndDate(),
-				true);
+				true, batch.getFees());
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class BatchDaoImpl implements BatchDao {
 
 	@Override
 	public List<Batch> findAllBatchesHavingTeacher(int teacherId) {
-		String sql = "select distinct batch.batchId, batchName, startingDate, endDate, isOpen from "
+		String sql = "select distinct batch.batchId, batchName, startingDate, endDate, isOpen, fees from "
 				+ "(select * from Subject where teacherId=?) as A " + "right join Batch on A.batchId=batch.batchId "
 				+ "where A.teacherId is not null";
 		return template.query(sql, new Object[] { teacherId }, new BeanPropertyRowMapper<>(Batch.class));

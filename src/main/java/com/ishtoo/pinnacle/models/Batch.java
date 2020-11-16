@@ -8,6 +8,15 @@ public class Batch {
 	private Date startingDate;
 	private Date endDate;
 	private boolean isOpen;
+	private int fees;
+
+	public int getFees() {
+		return fees;
+	}
+
+	public void setFees(int fees) {
+		this.fees = fees;
+	}
 
 	public String getBatchId() {
 		return batchId;
@@ -52,7 +61,7 @@ public class Batch {
 	@Override
 	public String toString() {
 		return "Batch [batchId=" + batchId + ", batchName=" + batchName + ", startingDate=" + startingDate
-				+ ", endDate=" + endDate + ", isOpen=" + isOpen + "]";
+				+ ", endDate=" + endDate + ", isOpen=" + isOpen + ", fees=" + fees + "]";
 	}
 
 }

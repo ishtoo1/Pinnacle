@@ -28,6 +28,7 @@ import com.ishtoo.pinnacle.dao.StudentDao;
 import com.ishtoo.pinnacle.dao.SubjectDao;
 import com.ishtoo.pinnacle.dao.TeacherDao;
 import com.ishtoo.pinnacle.dao.TestDao;
+import com.ishtoo.pinnacle.dao.TransactionDao;
 import com.ishtoo.pinnacle.models.LoginAccount;
 import com.ishtoo.pinnacle.models.Student;
 import com.ishtoo.pinnacle.models.Subject;
@@ -69,6 +70,9 @@ public class AdminController {
 
 	@Autowired
 	StudentBookRelationDao studentBookRelationDao;
+	
+	@Autowired
+	TransactionDao transactionDao;
 
 	@RequestMapping("/admin")
 	public String adminHome(Model m) {
@@ -653,6 +657,16 @@ public class AdminController {
 		testDao.deleteTest(testId);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
+	}
+	
+	@GetMapping("admin/getAllTransactions")
+	public String getAllTransactions(Model m) {
+		String loggedInUsername = securityService.findLoggedInUsername();
+		if (loggedInUsername != null) {
+			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
+		}
+		m.addAttribute("allTransactions", transactionDao.getAllTransactions());
+		return "transactions";
 	}
 
 }

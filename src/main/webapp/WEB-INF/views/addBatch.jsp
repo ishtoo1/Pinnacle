@@ -41,7 +41,9 @@
 					name="startingDate" required="required"><br> <label
 					for="endDate">Batch Ending Date</label> <input class="form-styling"
 					type="date" id="endDate" name="endDate" required="required"><br>
-				<br>
+				<label for="fees">Fees</label> <input class="form-styling"
+					type="number" id="fees" name="fees" min="0" max="200000"
+					required="required"><br><br>
 				<div class="btn-animate">
 					<input class="btn-submit" type="submit" value="Submit">
 				</div>

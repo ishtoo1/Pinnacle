@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS Batch
   startingDate DATE NOT NULL,
   endDate DATE NOT NULL,
   isOpen BOOL NOT NULL,
+  fees INT NOT NULL,
   PRIMARY KEY (batchId)
 );
 
@@ -104,6 +105,15 @@ CREATE TABLE IF NOT EXISTS StudentBookRelation
   PRIMARY KEY (bookId),
   FOREIGN KEY (studentId) REFERENCES Student(studentId) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (bookId) REFERENCES Book(bookId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Transaction
+(
+  transactionId VARCHAR(50) NOT NULL,
+  transactionAmount VARCHAR(10) NOT NULL,
+  status VARCHAR(20) NOT NULL,
+  customerId VARCHAR(20) NOT NULL,
+  PRIMARY KEY (transactionId)
 );
 
 insert into loginaccount values('admin', '$2a$10$8QmT9eFcvmPYUwixPmk0guQYS7Ff9IiUFaO3ieM0Iq1F1XYs9j5GO', 'ROLE_admin', 1);
