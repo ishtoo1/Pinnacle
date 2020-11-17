@@ -46,8 +46,6 @@
 				<ul class="dropdown-list-items">
 					<li><a href="/student/${userStr}/viewBatchProfile">My
 							Batch</a></li>
-					<li><a href="/student/${userStr}/book/all">View Books
-							issued to me</a></li>
 					<li><a href="/student/${userStr}/viewUpcomingTestsForBatch">View
 							Upcoming Tests for my Batch</a></li>
 					<li><a href="/student/${userStr}/viewSubjectsInBatch">View
@@ -55,7 +53,20 @@
 				</ul>
 			</div>
 		</div>
-
+		
+		<div class="dropdown-list-element">
+			<div class="dropdown-title-container not-border"
+				onclick="toggleBox(this)">
+				<div class="arrow"></div>
+				<div class="title-text">My Books</div>
+			</div>
+			<div class="content">
+				<ul class="dropdown-list-items">
+					<li><a href="/student/${userStr}/book/all">View Books issued to me</a></li>
+				</ul>
+			</div>
+		</div>
+		
 		<div class="dropdown-list-element">
 			<div class="dropdown-title-container not-border"
 				onclick="toggleBox(this)">
