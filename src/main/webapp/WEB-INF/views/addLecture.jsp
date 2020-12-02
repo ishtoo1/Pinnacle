@@ -48,7 +48,10 @@
 						<option value="${subject.getSubjectId()}">${subject.getSubjectId()}
 							${subject.getSubjectName()}</option>
 					</c:forEach>
-				</select> <br> <label for="lectureName">Lecture Name</label> <input
+				</select> <br> <label for="lectureId">Lecture Id</label> <input
+					class="form-styling" type="number" id="lectureId"
+					name="lectureId" required="required"><br>
+					<label for="lectureName">Lecture Name</label> <input
 					class="form-styling" type="text" id="lectureName"
 					name="lectureName" maxlength="40" required="required"><br>
 				<br>

@@ -11,5 +11,7 @@ public interface LectureDao {
 	List<Lecture> findLecturesInThisSubject(String batchId, String subjectId);
 
 	void deleteLecture(Lecture lecture);
+	
+	boolean checkIfLectureExistsWithSameIdInThisSubject(Lecture lecture);
 
 }

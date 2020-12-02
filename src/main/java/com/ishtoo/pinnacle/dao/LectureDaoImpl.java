@@ -17,8 +17,8 @@ public class LectureDaoImpl implements LectureDao {
 
 	@Override
 	public void addLecture(Lecture lecture) {
-		String sql = "insert into Lecture(lectureName, subjectId, batchId) values(?, ?, ?)";
-		template.update(sql, lecture.getLectureName(), lecture.getSubjectId(), lecture.getBatchId());
+		String sql = "insert into Lecture(lectureId, lectureName, subjectId, batchId) values(?, ?, ?, ?)";
+		template.update(sql, lecture.getLectureId(), lecture.getLectureName(), lecture.getSubjectId(), lecture.getBatchId());
 	}
 
 	@Override
@@ -31,6 +31,12 @@ public class LectureDaoImpl implements LectureDao {
 	public void deleteLecture(Lecture lecture) {
 		String sql = "delete from Lecture where lectureId=? and batchId=? and subjectId=?";
 		template.update(sql, lecture.getLectureId(), lecture.getBatchId(), lecture.getSubjectId());
+	}
+
+	@Override
+	public boolean checkIfLectureExistsWithSameIdInThisSubject(Lecture lecture) {
+		String sql = "select exists (select * from Lecture where lectureId=? and subjectId=? and batchId=?)";
+		return template.queryForObject(sql, Boolean.class, new Object[] { lecture.getLectureId(), lecture.getSubjectId(), lecture.getBatchId() });
 	}
 
 }

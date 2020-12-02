@@ -239,10 +239,14 @@ public class TeacherController {
 	}
 
 	@PostMapping("teacher/{username}/addLecture")
-	public String checkAddLecture(Lecture lecture, Model m, RedirectAttributes redirectAttributes) {
+	public String checkAddLecture(Lecture lecture, @PathVariable("username") String username, Model m, RedirectAttributes redirectAttributes) {
 		String loggedInUsername = securityService.findLoggedInUsername();
 		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
+		}
+		if (lectureDao.checkIfLectureExistsWithSameIdInThisSubject(lecture)) {
+			redirectAttributes.addFlashAttribute("error", "Lecture with this Id already exists in this Subject");
+			return "redirect:/teacher/" + username + "/addLecture";
 		}
 		lectureDao.addLecture(lecture);
 		redirectAttributes.addFlashAttribute("success", "Success!");

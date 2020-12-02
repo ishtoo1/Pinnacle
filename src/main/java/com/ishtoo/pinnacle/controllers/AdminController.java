@@ -415,6 +415,11 @@ public class AdminController {
 		if (loggedInUsername != null) {
 			m.addAttribute("loggedInAccount", userService.findByUsername(loggedInUsername));
 		}
+		if (lectureDao.checkIfLectureExistsWithSameIdInThisSubject(lecture)) {
+			m.addAttribute("error", "Lecture with this Id already exists in this Subject");
+			m.addAttribute("allBatches", batchDao.findAllBatches());
+			return "addLecture";
+		}
 		lectureDao.addLecture(lecture);
 		redirectAttributes.addFlashAttribute("success", "Success!");
 		return "redirect:/admin";
